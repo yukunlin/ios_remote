@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6811E3FA1877185200C606D0 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6811E3F81877185200C606D0 /* Icon.png */; };
+		6811E3FB1877185200C606D0 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6811E3F91877185200C606D0 /* Icon@2x.png */; };
 		68B855DD18718900006E92C4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B855DC18718900006E92C4 /* Foundation.framework */; };
 		68B855DF18718900006E92C4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B855DE18718900006E92C4 /* CoreGraphics.framework */; };
 		68B855E118718900006E92C4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68B855E018718900006E92C4 /* UIKit.framework */; };
@@ -41,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6811E3F81877185200C606D0 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		6811E3F91877185200C606D0 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		68B855D918718900006E92C4 /* Iver Control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Iver Control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		68B855DC18718900006E92C4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		68B855DE18718900006E92C4 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -103,6 +107,8 @@
 		68B855D018718900006E92C4 = {
 			isa = PBXGroup;
 			children = (
+				6811E3F81877185200C606D0 /* Icon.png */,
+				6811E3F91877185200C606D0 /* Icon@2x.png */,
 				68B855E218718900006E92C4 /* Iver Control */,
 				68B855FB18718900006E92C4 /* Iver ControlTests */,
 				68B855DB18718900006E92C4 /* Frameworks */,
@@ -299,9 +305,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6811E3FA1877185200C606D0 /* Icon.png in Resources */,
 				68B855E718718900006E92C4 /* InfoPlist.strings in Resources */,
 				68B8560C1871891C006E92C4 /* main.storyboard in Resources */,
 				68B855EF18718900006E92C4 /* Images.xcassets in Resources */,
+				6811E3FB1877185200C606D0 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,8 +19,10 @@
 }
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *stop;
 @property (strong, atomic) CMMotionManager *motionManager;
-@property (weak, nonatomic) IBOutlet UILabel *lblPitch;
+@property (weak, nonatomic) IBOutlet UILabel *lblTrim;
 @property (weak, nonatomic) IBOutlet UILabel *lblThrottle;
+@property (weak, nonatomic) IBOutlet UILabel *lblPitch;
+@property (weak, nonatomic) IBOutlet UILabel *lblSpeed;
 @property Compass* compass;
 @end
 
@@ -42,7 +44,7 @@
     
     // Set up sliders
     NSInteger margin = -50;
-    NSInteger height = 220;
+    NSInteger height = 230;
     CGRect trimFrame = CGRectMake(margin, self.view.frame.size.width/2+10, height, 20);
     CGRect throttleFrame = CGRectMake(self.view.frame.size.height-(height+margin),self.view.frame.size.width/2+10, height, 20);
 
@@ -54,12 +56,12 @@
     
     // Set up accelerometer
     self.motionManager = [[CMMotionManager alloc] init];
-    self.motionManager.deviceMotionUpdateInterval = 0.25;
+    self.motionManager.deviceMotionUpdateInterval = 0.1;
     
     // Set up Compass
     NSInteger compassSize = 220;
     self.compass = [[Compass alloc] initWithFrame:
-                    CGRectMake((self.view.frame.size.height-compassSize)/2,(self.view.frame.size.width-compassSize)/2+20,compassSize,compassSize)];
+                    CGRectMake((self.view.frame.size.height-compassSize)/2,(self.view.frame.size.width-compassSize)/2+22,compassSize,compassSize)];
     [self.view addSubview:self.compass];
     
     // Start accelerometer and networking
@@ -73,7 +75,7 @@
         }
         else
         {
-            self.con.Rudder = (int) (128 - 2 * (motion.attitude.pitch) / (M_PI/2) *128);
+            self.con.Rudder = (int) (128 - 4 * (motion.attitude.pitch) / (M_PI/2) *128);
         }
     }
     ];
@@ -95,6 +97,8 @@
                       ^{
                           [self.compass Rotate:self.con.Heading * M_PI / -180 withRate:.33];
                           [self.compass Translate:self.con.Pitch row:self.con.Row withRate:.33];
+                          self.lblPitch.text = [NSString stringWithFormat:@"%.1f", self.con.Pitch];
+                          self.lblSpeed.text = [NSString stringWithFormat:@"%.1f", self.con.Speed];
                       });
     }
     
@@ -117,7 +121,7 @@
 
 -(IBAction) trimAction:(id) sender{
     self.con.Trim = (int) trim.value;
-    self.lblPitch.text = [NSString stringWithFormat:@"%d", (int) trim.value];
+    self.lblTrim.text = [NSString stringWithFormat:@"%d", (int) trim.value];
 }
 
 -(IBAction) throttleAction:(id) sender{

@@ -30,41 +30,30 @@
     CGFloat centerY = frame.size.height/2;
     CGFloat radius = centerX;
     
-    // Draw heading indicator line
-    CGFloat xBottom = cos(1.5 * M_PI) * radius * 1 + centerX;
-    CGFloat yBottom = sin(1.5 * M_PI) * radius * 1 + centerY;
-    CGFloat xTop = cos(1.5 * M_PI) * radius * 0.65 + centerX;
-    CGFloat yTop = sin(1.5 * M_PI) * radius * 0.65 + centerY;
-    
-    CGContextMoveToPoint(context, xBottom, yBottom);
-    CGContextAddLineToPoint(context, xTop, yTop);
-    CGContextSetLineWidth(context, 2.7);
-    CGContextStrokePath(context);
-    
     // Draw Center Circle
     CGContextAddEllipseInRect(context,
-                              CGRectMake(centerX - .25 * radius, centerY - .25 * radius, .5 * radius, .5 * radius));
+                              CGRectMake(centerX - .17 * radius, centerY - .17 * radius, .34 * radius, .34 * radius));
     
     CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:0.1 alpha:0.04].CGColor);
     CGContextFillPath(context);
     
     // Draw center cross
-    CGContextMoveToPoint(context, centerX - .06 * radius, centerY);
-    CGContextAddLineToPoint(context, centerX + .06 * radius, centerY);
+    CGContextMoveToPoint(context, centerX - .05 * radius, centerY);
+    CGContextAddLineToPoint(context, centerX + .05 * radius, centerY);
     CGContextSetLineWidth(context, .7);
     CGContextStrokePath(context);
     
-    CGContextMoveToPoint(context, centerX, centerY - .06 * radius);
-    CGContextAddLineToPoint(context, centerX, centerY + .06 * radius);
+    CGContextMoveToPoint(context, centerX, centerY - .05 * radius);
+    CGContextAddLineToPoint(context, centerX, centerY + .05 * radius);
     CGContextStrokePath(context);
 }
 
 - (double) limitValue:(double)value
 {
-    if (value > 20)
-        return 20;
-    else if (value < -20)
-        return -20;
+    if (value > 15)
+        return 15;
+    else if (value < -15)
+        return -15;
     else
         return value;
 }
@@ -78,8 +67,8 @@
     CGFloat radius = self.bounds.size.width/2;
     
     self.transform = CGAffineTransformMakeTranslation(
-            [self limitValue:row] * (.3/20.0) * radius,
-            [self limitValue:pitch] * (.3/20.0) * radius);
+            [self limitValue:row] * (.25/15.0) * radius,
+            [self limitValue:pitch] * (.25/15.0) * radius);
     
     [UIView commitAnimations];
 }

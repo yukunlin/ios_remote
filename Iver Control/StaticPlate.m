@@ -29,6 +29,18 @@
     CGFloat centerY = frame.size.height/2;
     CGFloat radius = centerX;
     
+    // Draw heading indicator line
+    CGFloat xBottom = cos(1.5 * M_PI) * radius * 1 + centerX;
+    CGFloat yBottom = sin(1.5 * M_PI) * radius * 1 + centerY;
+    CGFloat xTop = cos(1.5 * M_PI) * radius * 0.65 + centerX;
+    CGFloat yTop = sin(1.5 * M_PI) * radius * 0.65 + centerY;
+    
+    CGContextMoveToPoint(context, xBottom, yBottom);
+    CGContextAddLineToPoint(context, xTop, yTop);
+    CGContextSetLineWidth(context, 2.7);
+    CGContextStrokePath(context);
+
+    
     CGContextMoveToPoint(context, centerX - .35 * radius, centerY);
     CGContextAddLineToPoint(context, centerX + .35 * radius, centerY);
     CGContextSetLineWidth(context, .7);

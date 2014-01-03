@@ -75,6 +75,7 @@
     [outputStream setDelegate:nil];
     inputStream = nil;
     outputStream = nil;
+    [self.Timer invalidate];
 }
 
 -(void) sendMessage
