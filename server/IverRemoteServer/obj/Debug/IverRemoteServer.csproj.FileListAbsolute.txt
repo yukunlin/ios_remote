@@ -1,5 +1,0 @@
-C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\IverRemoteServer\bin\Debug\IverRemoteServer.exe
-C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\IverRemoteServer\bin\Debug\IverRemoteServer.pdb
-C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\IverRemoteServer\obj\Debug\IverRemoteServer.csprojResolveAssemblyReference.cache
-C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\IverRemoteServer\obj\Debug\IverRemoteServer.exe
-C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\IverRemoteServer\obj\Debug\IverRemoteServer.pdb
