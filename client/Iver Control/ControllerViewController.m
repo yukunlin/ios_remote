@@ -91,7 +91,7 @@
 {
     while (self.con.CommStart)
     {
-        [NSThread sleepForTimeInterval:.2];
+        [NSThread sleepForTimeInterval:.1];
         [self.con sendMessage];
     }
     
@@ -103,11 +103,11 @@
 {
     while (self.con.CommStart)
     {
-        [NSThread sleepForTimeInterval:.4];
+        [NSThread sleepForTimeInterval:.2];
         dispatch_async(dispatch_get_main_queue(),
                        ^{
-                           [self.compass Rotate:self.con.Heading * M_PI / -180 withRate:.4];
-                           [self.compass Translate:self.con.Pitch row:self.con.Row withRate:.4];
+                           [self.compass Rotate:self.con.Heading * M_PI / -180 withRate:.2];
+                           [self.compass Translate:self.con.Pitch row:self.con.Row withRate:.2];
                            self.lblPitch.text = [NSString stringWithFormat:@"%.1f", self.con.Pitch];
                            self.lblSpeed.text = [NSString stringWithFormat:@"%.1f", self.con.Speed];
                        });

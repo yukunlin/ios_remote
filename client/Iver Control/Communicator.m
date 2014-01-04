@@ -49,7 +49,7 @@
 
 -(void) setTimeOut
 {
-    self.Timer = [NSTimer scheduledTimerWithTimeInterval:5.0
+    self.Timer = [NSTimer scheduledTimerWithTimeInterval:4.0
                                                   target:self
                                                 selector:@selector(showAlert)
                                                 userInfo:nil
@@ -75,6 +75,7 @@
     [outputStream setDelegate:nil];
     inputStream = nil;
     outputStream = nil;
+   //NSLog (@"Closed stream");
     [self.Timer invalidate];
 }
 
@@ -120,7 +121,7 @@
                     [self setTimeOut];
                 }
             } @catch (NSException *exception) {
-                [self showAlert];	
+                //[self showAlert];
             }
         }
         break;

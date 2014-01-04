@@ -10,5 +10,6 @@
 #import "Communicator.h"
 
 @interface ControllerViewController : UIViewController<UIAlertViewDelegate>
-@property (assign) Communicator* con;
+@property Communicator* con;
+
 @end
