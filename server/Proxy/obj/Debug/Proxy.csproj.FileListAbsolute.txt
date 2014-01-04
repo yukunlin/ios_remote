@@ -1,0 +1,5 @@
+C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\Proxy\bin\Debug\Proxy.exe
+C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\Proxy\bin\Debug\Proxy.pdb
+C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\Proxy\obj\Debug\Proxy.csprojResolveAssemblyReference.cache
+C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\Proxy\obj\Debug\Proxy.exe
+C:\Users\CAPCOM\Documents\GitHub\IverRemoteServer\Proxy\obj\Debug\Proxy.pdb
