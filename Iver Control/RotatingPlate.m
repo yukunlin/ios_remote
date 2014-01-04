@@ -40,20 +40,15 @@
 
 -(void) Rotate:(double) angle withRate:(double)r
 {
-    
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:r];
-    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-     
-    self.transform = CGAffineTransformMakeRotation(angle);
-    
-    for (id object in self.compassMarkers)
-       ((UILabel*) object).transform = CGAffineTransformMakeRotation(-angle);
-    
-    for (id object in self.headingMarkers)
-        ((UILabel*) object).transform = CGAffineTransformMakeRotation(-angle);
-    
-    [UIView commitAnimations];
+    [UIView animateWithDuration:r delay:0 options: UIViewAnimationOptionCurveLinear animations:^{
+        self.transform = CGAffineTransformMakeRotation(angle);
+        
+        for (id object in self.compassMarkers)
+            ((UILabel*) object).transform = CGAffineTransformMakeRotation(-angle);
+        
+        for (id object in self.headingMarkers)
+            ((UILabel*) object).transform = CGAffineTransformMakeRotation(-angle);
+    }completion:nil];
 }
 
 - (void)drawRect:(CGRect)rect

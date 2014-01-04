@@ -67,6 +67,7 @@
     // Start accelerometer and networking
     [self.con openStream];
     [self performSelectorInBackground:@selector(startCommLoop) withObject:nil];
+    [self performSelectorInBackground:@selector(updateGUI) withObject:nil];
     [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
                                             withHandler:^(CMDeviceMotion *motion, NSError *error)
     {
@@ -75,7 +76,7 @@
         }
         else
         {
-            self.con.Rudder = (int) (128 - 4 * (motion.attitude.pitch) / (M_PI/2) *128);
+            self.con.Rudder = (int) (128 - 3.5 * (motion.attitude.pitch) / (M_PI/2) *128);
         }
     }
     ];
@@ -90,20 +91,27 @@
 {
     while (self.con.CommStart)
     {
+        [NSThread sleepForTimeInterval:.2];
         [self.con sendMessage];
-        [NSThread sleepForTimeInterval:.33];
-                
-        dispatch_sync(dispatch_get_main_queue(),
-                      ^{
-                          [self.compass Rotate:self.con.Heading * M_PI / -180 withRate:.33];
-                          [self.compass Translate:self.con.Pitch row:self.con.Row withRate:.33];
-                          self.lblPitch.text = [NSString stringWithFormat:@"%.1f", self.con.Pitch];
-                          self.lblSpeed.text = [NSString stringWithFormat:@"%.1f", self.con.Speed];
-                      });
     }
     
     [self.motionManager stopDeviceMotionUpdates];
     [self.con closeStream];
+}
+
+-(void) updateGUI
+{
+    while (self.con.CommStart)
+    {
+        [NSThread sleepForTimeInterval:.4];
+        dispatch_async(dispatch_get_main_queue(),
+                       ^{
+                           [self.compass Rotate:self.con.Heading * M_PI / -180 withRate:.4];
+                           [self.compass Translate:self.con.Pitch row:self.con.Row withRate:.4];
+                           self.lblPitch.text = [NSString stringWithFormat:@"%.1f", self.con.Pitch];
+                           self.lblSpeed.text = [NSString stringWithFormat:@"%.1f", self.con.Speed];
+                       });
+    }
 }
 
 

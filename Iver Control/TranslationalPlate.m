@@ -60,17 +60,12 @@
 
 -(void) Translate:(double) pitch row:(double) row withRate:(double)r
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:r];
-    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-    
     CGFloat radius = self.bounds.size.width/2;
-    
-    self.transform = CGAffineTransformMakeTranslation(
-            [self limitValue:row] * (.25/15.0) * radius,
-            [self limitValue:pitch] * (.25/15.0) * radius);
-    
-    [UIView commitAnimations];
+    [UIView animateWithDuration:r delay:0 options: UIViewAnimationOptionCurveLinear animations:^{
+        self.transform = CGAffineTransformMakeTranslation(
+                                                          [self limitValue:row] * (.25/15.0) * radius,
+                                                          [self limitValue:pitch] * (.25/15.0) * radius);
+    }completion:nil];
 }
 
 @end

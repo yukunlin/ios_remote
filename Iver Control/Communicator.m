@@ -58,13 +58,13 @@
 
 -(void) showAlert
 {
+    [self.Timer invalidate];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error"
                                                     message:@"Connection lost with Iver."
                                                    delegate:self.View
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
     [alert show];
-    [self.Timer invalidate];
 }
 
 -(void) closeStream
@@ -107,7 +107,7 @@
                         
                     NSString *s = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
                     NSArray *split = [s componentsSeparatedByString:@","];
-                    
+                    NSLog(s);
                     self.Heading = [[split objectAtIndex:0] doubleValue];
                     self.Speed = [[split objectAtIndex:1] doubleValue];
                     self.Pitch = [[split objectAtIndex:2] doubleValue];
