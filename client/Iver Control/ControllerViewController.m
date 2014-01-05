@@ -13,32 +13,21 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface ControllerViewController ()
-{
-    LargeSlider *trim;
-    LargeSlider *throttle;
-}
+
+@property LargeSlider *trim;
+@property LargeSlider *throttle;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *stop;
 @property (strong, atomic) CMMotionManager *motionManager;
 @property (weak, nonatomic) IBOutlet UILabel *lblTrim;
 @property (weak, nonatomic) IBOutlet UILabel *lblThrottle;
-@property (weak, nonatomic) IBOutlet UILabel *lblPitch;
+@property (weak, nonatomic) IBOutlet UILabel *lblRudder;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpeed;
 @property Compass* compass;
-@property NSTimer* CommTimer;
-@property NSTimer* GUITimer;
+@property NSTimer* commTimer;
+@property NSTimer* guiTimer;
 @end
 
 @implementation ControllerViewController
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -50,11 +39,11 @@
     CGRect trimFrame = CGRectMake(margin, self.view.frame.size.width/2+10, height, 20);
     CGRect throttleFrame = CGRectMake(self.view.frame.size.height-(height+margin),self.view.frame.size.width/2+10, height, 20);
 
-    trim = [[LargeSlider alloc] initWithFrame:trimFrame];
-    [self initializeSlider:trim action:@selector(trimAction:)];
+    self.trim = [[LargeSlider alloc] initWithFrame:trimFrame];
+    [self initializeSlider:self.trim action:@selector(trimAction:)];
     
-    throttle = [[LargeSlider alloc] initWithFrame:throttleFrame];
-    [self initializeSlider:throttle action:@selector(throttleAction:)];
+    self.throttle = [[LargeSlider alloc] initWithFrame:throttleFrame];
+    [self initializeSlider:self.throttle action:@selector(throttleAction:)];
     
     // Set up accelerometer
     self.motionManager = [[CMMotionManager alloc] init];
@@ -68,8 +57,8 @@
     
     // Start accelerometer and networking
     [self.con openStream];
-    self.CommTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(sendMessage) userInfo:nil repeats:YES];
-    self.GUITimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(updateGUI) userInfo:nil repeats:YES];
+    self.commTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(sendMessage) userInfo:nil repeats:YES];
+    self.guiTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(updateGUI) userInfo:nil repeats:YES];
     
     [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
                                             withHandler:^(CMDeviceMotion *motion, NSError *error)
@@ -77,14 +66,23 @@
         if(error)
             NSLog(@"%@", error);
         else
-            self.con.Rudder = (int) (128 - 3.5 * (motion.attitude.pitch) / (M_PI/2) *128);
+        {
+            self.con.Rudder = (int) MIN( MAX( (128 - 3.5 * (motion.attitude.pitch) / (M_PI/2) *128), 0), 256);
+            self.lblRudder.text = [NSString stringWithFormat:@"%d", self.con.Rudder];
+        }
     }
     ];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [self performSegueWithIdentifier:@"unwindToConnect" sender:self];
+    if (buttonIndex == 0)
+        [self performSegueWithIdentifier:@"unwindToConnect" sender:self];
+    else
+    {
+        [self.con closeStream];
+        [self.con openStream];
+    }
 }
 
 -(void) sendMessage
@@ -95,9 +93,8 @@
 
 -(void) updateGUI
 {
-    [self.compass Rotate:self.con.Heading * M_PI / -180 withRate:.2];
-    [self.compass Translate:self.con.Pitch row:self.con.Row withRate:.2];
-    self.lblPitch.text = [NSString stringWithFormat:@"%.1f", self.con.Pitch];
+    [self.compass rotate:self.con.Heading * M_PI / -180 withRate:.2];
+    [self.compass translate:self.con.Pitch row:self.con.Row withRate:.2];
     self.lblSpeed.text = [NSString stringWithFormat:@"%.1f", self.con.Speed];
 }
 
@@ -105,8 +102,8 @@
 {
     [self.motionManager stopDeviceMotionUpdates];
     [self.con closeStream];
-    [self.GUITimer invalidate];
-    [self.CommTimer invalidate];
+    [self.guiTimer invalidate];
+    [self.commTimer invalidate];
 }
 
 -(void) initializeSlider:(LargeSlider*) slider action:(SEL) action
@@ -122,19 +119,19 @@
 }
 
 -(IBAction) trimAction:(id) sender{
-    self.con.Trim = (int) trim.value;
-    self.lblTrim.text = [NSString stringWithFormat:@"%d", (int) trim.value];
+    self.con.Trim = (int) self.trim.value;
+    self.lblTrim.text = [NSString stringWithFormat:@"%d", (int) self.trim.value];
 }
 
 -(IBAction) throttleAction:(id) sender{
-    self.con.Throttle = (int) throttle.value;
-    self.lblThrottle.text = [NSString stringWithFormat:@"%d", (int) throttle.value];
+    self.con.Throttle = (int) self.throttle.value;
+    self.lblThrottle.text = [NSString stringWithFormat:@"%d", (int) self.throttle.value];
 }
 
 -(IBAction) stopPressed:(id) sender{
-    [throttle setValue:128 animated:0];
+    [self.throttle setValue:128 animated:0];
     self.con.Throttle = 128;
-    self.lblThrottle.text = [NSString stringWithFormat:@"%d", (int) throttle.value];
+    self.lblThrottle.text = [NSString stringWithFormat:@"%d", (int) self.throttle.value];
 }
 
 - (void)didReceiveMemoryWarning

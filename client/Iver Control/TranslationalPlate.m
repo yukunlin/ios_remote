@@ -58,7 +58,7 @@
         return value;
 }
 
--(void) Translate:(double) pitch row:(double) row withRate:(double)r
+-(void) translate:(double) pitch row:(double) row withRate:(double)r
 {
     CGFloat radius = self.bounds.size.width/2;
     [UIView animateWithDuration:r delay:0 options: UIViewAnimationOptionCurveLinear animations:^{

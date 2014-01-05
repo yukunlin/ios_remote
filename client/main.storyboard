@@ -60,6 +60,7 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
                         <outlet property="address" destination="J4P-eK-2I6" id="6Ki-xv-4vz"/>
+                        <outlet property="btnConnect" destination="a39-if-Vd6" id="lBO-ov-JWE"/>
                         <outlet property="port" destination="7nD-1J-53b" id="FRo-6s-WAO"/>
                     </connections>
                 </viewController>
@@ -109,7 +110,7 @@
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pitch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ph-Jj-ibC">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rudder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ph-Jj-ibC">
                                 <rect key="frame" x="80" y="254" width="50" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -205,7 +206,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="lblPitch" destination="2rv-f0-Le0" id="QpK-TY-1uv"/>
+                        <outlet property="lblRudder" destination="2rv-f0-Le0" id="lUg-gH-vyF"/>
                         <outlet property="lblSpeed" destination="rGo-p1-Ewy" id="Lcn-oR-cJh"/>
                         <outlet property="lblThrottle" destination="oar-up-J5J" id="oXM-6V-Tps"/>
                         <outlet property="lblTrim" destination="nDB-cx-Kbx" id="fbJ-EI-wSI"/>

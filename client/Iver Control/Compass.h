@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface Compass : UIView
--(void) Rotate:(double) angle withRate:(double)r;
--(void) Translate:(double) pitch row:(double) row withRate:(double)r;
+-(void) rotate:(double) angle withRate:(double)r;
+-(void) translate:(double) pitch row:(double) row withRate:(double)r;
 
 @end

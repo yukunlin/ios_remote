@@ -37,14 +37,14 @@
     return self;
 }
 
--(void) Rotate:(double) angle withRate:(double)r;
+-(void) rotate:(double) angle withRate:(double)r;
 {
-    [self.plate Rotate:angle withRate:r];
+    [self.plate rotate:angle withRate:r];
 }
 
--(void) Translate:(double) pitch row:(double) row withRate:(double)r
+-(void) translate:(double) pitch row:(double) row withRate:(double)r
 {
-    [self.tPlate Translate:pitch row:row withRate:r];
+    [self.tPlate translate:pitch row:row withRate:r];
 }
 
 @end

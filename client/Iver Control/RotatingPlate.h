@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RotatingPlate : UIView
--(void) Rotate:(double) angle withRate:(double)r;
+-(void) rotate:(double) angle withRate:(double)r;
 
 @end

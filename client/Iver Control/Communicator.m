@@ -64,8 +64,8 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error"
                                                     message:@"Connection lost with Iver."
                                                    delegate:self.View
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+                                          cancelButtonTitle:@"Disconnect"
+                                          otherButtonTitles:@"Reconnect",nil];
     [alert show];
 }
 

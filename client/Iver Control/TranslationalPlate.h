@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface TranslationalPlate : UIView
--(void) Translate:(double) pitch row:(double) row withRate:(double)r;
+-(void) translate:(double) pitch row:(double) row withRate:(double)r;
 
 @end

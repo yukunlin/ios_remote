@@ -38,7 +38,7 @@
     label.textAlignment = NSTextAlignmentCenter;
 }
 
--(void) Rotate:(double) angle withRate:(double)r
+-(void) rotate:(double) angle withRate:(double)r
 {
     [UIView animateWithDuration:r delay:0 options: UIViewAnimationOptionCurveLinear animations:^{
         self.transform = CGAffineTransformMakeRotation(angle);
@@ -114,7 +114,7 @@
     }
     
     // Draw red triangle
-    CGFloat size = 4.1;
+    CGFloat size = 4.0;
     CGFloat xTriTip = cos(1.5 * M_PI) * radius * 0.85 + centerX;
     CGFloat yTriTip = sin(1.5 * M_PI) * radius * 0.85 + centerY;
     CGFloat xTriLeft = xTriTip + size;

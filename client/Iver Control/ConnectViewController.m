@@ -13,20 +13,10 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *address;
 @property (weak, nonatomic) IBOutlet UITextField *port;
-
-
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *btnConnect;
 @end
 
 @implementation ConnectViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -43,10 +33,21 @@
     [self.address becomeFirstResponder];
 }
 
+-(void) checkInput
+{
+    if (self.address.text.length > 0 || self.port.text.length > 0)
+        self.btnConnect.enabled = YES;
+    else
+        self.btnConnect.enabled = NO;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.address becomeFirstResponder];
+    [self.address addTarget:self action:@selector(checkInput) forControlEvents:UIControlEventEditingChanged];
+    [self.port addTarget:self action:@selector(checkInput) forControlEvents:UIControlEventEditingChanged];
+    self.btnConnect.enabled = NO;
 }
 
 @end
