@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblPitch;
 @property (weak, nonatomic) IBOutlet UILabel *lblSpeed;
 @property Compass* compass;
+@property NSTimer* CommTimer;
+@property NSTimer* GUITimer;
 @end
 
 @implementation ControllerViewController
@@ -66,18 +68,16 @@
     
     // Start accelerometer and networking
     [self.con openStream];
-    [self performSelectorInBackground:@selector(startCommLoop) withObject:nil];
-    [self performSelectorInBackground:@selector(updateGUI) withObject:nil];
+    self.CommTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(sendMessage) userInfo:nil repeats:YES];
+    self.GUITimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(updateGUI) userInfo:nil repeats:YES];
+    
     [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
                                             withHandler:^(CMDeviceMotion *motion, NSError *error)
     {
-        if(error){
+        if(error)
             NSLog(@"%@", error);
-        }
         else
-        {
             self.con.Rudder = (int) (128 - 3.5 * (motion.attitude.pitch) / (M_PI/2) *128);
-        }
     }
     ];
 }
@@ -87,33 +87,27 @@
     [self performSegueWithIdentifier:@"unwindToConnect" sender:self];
 }
 
--(void) startCommLoop
+-(void) sendMessage
 {
-    while (self.con.CommStart)
-    {
-        [NSThread sleepForTimeInterval:.1];
-        [self.con sendMessage];
-    }
-    
-    [self.motionManager stopDeviceMotionUpdates];
-    [self.con closeStream];
+    [self.con sendMessage];
 }
+    
 
 -(void) updateGUI
 {
-    while (self.con.CommStart)
-    {
-        [NSThread sleepForTimeInterval:.2];
-        dispatch_async(dispatch_get_main_queue(),
-                       ^{
-                           [self.compass Rotate:self.con.Heading * M_PI / -180 withRate:.2];
-                           [self.compass Translate:self.con.Pitch row:self.con.Row withRate:.2];
-                           self.lblPitch.text = [NSString stringWithFormat:@"%.1f", self.con.Pitch];
-                           self.lblSpeed.text = [NSString stringWithFormat:@"%.1f", self.con.Speed];
-                       });
-    }
+    [self.compass Rotate:self.con.Heading * M_PI / -180 withRate:.2];
+    [self.compass Translate:self.con.Pitch row:self.con.Row withRate:.2];
+    self.lblPitch.text = [NSString stringWithFormat:@"%.1f", self.con.Pitch];
+    self.lblSpeed.text = [NSString stringWithFormat:@"%.1f", self.con.Speed];
 }
 
+-(void) CleanUp
+{
+    [self.motionManager stopDeviceMotionUpdates];
+    [self.con closeStream];
+    [self.GUITimer invalidate];
+    [self.CommTimer invalidate];
+}
 
 -(void) initializeSlider:(LargeSlider*) slider action:(SEL) action
 {

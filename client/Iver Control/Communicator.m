@@ -8,6 +8,10 @@
 
 #import "Communicator.h"
 
+@interface Communicator()
+@property NSTimer *TimeOutTimer;
+@end
+
 @implementation Communicator
 {
     NSInputStream* inputStream;
@@ -19,8 +23,6 @@
     self.Port = port;
     self.IP = ip;
     self.Trim = self.Throttle = self.Rudder = 128;
-    self.CommStart = true;
-    
     self.Heading = self.Speed = self.Pitch = self.Row = 0;
     self.View = view;
     return self;
@@ -49,7 +51,7 @@
 
 -(void) setTimeOut
 {
-    self.Timer = [NSTimer scheduledTimerWithTimeInterval:4.0
+    self.TimeOutTimer = [NSTimer scheduledTimerWithTimeInterval:4.0
                                                   target:self
                                                 selector:@selector(showAlert)
                                                 userInfo:nil
@@ -58,7 +60,7 @@
 
 -(void) showAlert
 {
-    [self.Timer invalidate];
+    [self.TimeOutTimer invalidate];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error"
                                                     message:@"Connection lost with Iver."
                                                    delegate:self.View
@@ -75,8 +77,7 @@
     [outputStream setDelegate:nil];
     inputStream = nil;
     outputStream = nil;
-   //NSLog (@"Closed stream");
-    [self.Timer invalidate];
+    [self.TimeOutTimer invalidate];
 }
 
 -(void) sendMessage
@@ -108,7 +109,6 @@
                         
                     NSString *s = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
                     NSArray *split = [s componentsSeparatedByString:@","];
-                    NSLog(s);
                     self.Heading = [[split objectAtIndex:0] doubleValue];
                     self.Speed = [[split objectAtIndex:1] doubleValue];
                     self.Pitch = [[split objectAtIndex:2] doubleValue];
@@ -117,7 +117,7 @@
                     NSLog(@"Heading: %f, Speed: %f, Pitch: %f, Row: %f", self.Heading, self.Speed, self.Pitch, self.Row);
                     
                     // Reset timeout Timer
-                    [self.Timer invalidate];
+                    [self.TimeOutTimer invalidate];
                     [self setTimeOut];
                 }
             } @catch (NSException *exception) {

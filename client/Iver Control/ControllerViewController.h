@@ -12,4 +12,6 @@
 @interface ControllerViewController : UIViewController<UIAlertViewDelegate>
 @property Communicator* con;
 
+-(void) CleanUp;
+
 @end

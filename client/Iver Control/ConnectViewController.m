@@ -38,8 +38,8 @@
 
 - (IBAction)unwindToConnect:(UIStoryboardSegue *)segue
 {
-    self.con.CommStart = false;
-    [self.con.Timer invalidate];
+    ControllerViewController *vc = [segue sourceViewController];
+    [vc CleanUp];
     [self.address becomeFirstResponder];
 }
 

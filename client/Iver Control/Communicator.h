@@ -15,13 +15,11 @@
 @property int Trim;
 @property int Throttle;
 @property int Rudder;
-@property Boolean CommStart;
 @property double Heading;
 @property double Speed;
 @property double Pitch;
 @property double Row;
 @property (weak) UIViewController* View;
-@property NSTimer *Timer;
 
 -(id) initWithAddress:(NSString*)ip port:(int)port andDelegateView:(UIViewController*)view;
 -(void) sendMessage;
