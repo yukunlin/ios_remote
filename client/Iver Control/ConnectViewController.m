@@ -35,7 +35,7 @@
 
 -(void) checkInput
 {
-    if (self.address.text.length > 0 || self.port.text.length > 0)
+    if (self.address.text.length > 0 && self.port.text.length > 0)
         self.btnConnect.enabled = YES;
     else
         self.btnConnect.enabled = NO;

@@ -10,7 +10,6 @@
 #import <CoreMotion/CoreMotion.h>
 #import "LargeSlider.h"
 #import "Compass.h"
-#import <QuartzCore/QuartzCore.h>
 
 @interface ControllerViewController ()
 
@@ -134,10 +133,5 @@
     self.lblThrottle.text = [NSString stringWithFormat:@"%d", (int) self.throttle.value];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

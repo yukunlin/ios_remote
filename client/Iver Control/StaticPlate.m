@@ -41,7 +41,7 @@
     CGContextSetLineWidth(context, 2.7);
     CGContextStrokePath(context);
 
-    
+    // Draw center cross
     CGContextMoveToPoint(context, centerX - .35 * radius, centerY);
     CGContextAddLineToPoint(context, centerX + .35 * radius, centerY);
     CGContextSetLineWidth(context, .7);
