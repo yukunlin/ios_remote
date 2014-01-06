@@ -23,7 +23,7 @@
 
 - (BOOL) pointInside:(CGPoint)point withEvent:(UIEvent*)event {
     CGRect bounds = self.bounds;
-    bounds = CGRectInset(bounds, -10, -8);
+    bounds = CGRectInset(bounds, -40, -45);
     return CGRectContainsPoint(bounds, point);
 }
 
@@ -35,13 +35,5 @@
     return (touchPoint.x >= (thumbPos - EFFECTIVE_THUMB_SIZE) &&
             touchPoint.x <= (thumbPos + EFFECTIVE_THUMB_SIZE));
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

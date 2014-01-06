@@ -33,7 +33,7 @@
     [super viewDidLoad];
     
     // Set up sliders
-    NSInteger margin = -50;
+    NSInteger margin = -60;
     NSInteger height = 230;
     CGRect trimFrame = CGRectMake(margin, self.view.frame.size.width/2+10, height, 20);
     CGRect throttleFrame = CGRectMake(self.view.frame.size.height-(height+margin),self.view.frame.size.width/2+10, height, 20);
