@@ -36,7 +36,6 @@
     CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault, (__bridge CFStringRef)(self.IP), (UInt32) self.Port, &readStream, &writeStream);
     inputStream = (__bridge_transfer NSInputStream *)readStream;
     outputStream = (__bridge_transfer NSOutputStream *)writeStream;
-    
     [inputStream setDelegate:self];
     [outputStream setDelegate:self];
     
@@ -46,7 +45,6 @@
     [inputStream open];
     [outputStream open];
     [self setTimeOut];
-    
 }
 
 -(void) setTimeOut
@@ -84,8 +82,8 @@
 {
     NSString* message = [NSString stringWithFormat:@"%d,%d,%d\r\n", self.Trim, self.Throttle, self.Rudder];
     NSData* data = [[NSData alloc] initWithData:[message dataUsingEncoding:NSASCIIStringEncoding]];
-    
-    [outputStream write:[data bytes] maxLength:[data length]];
+    if (outputStream.streamStatus == NSStreamStatusOpen)
+        [outputStream write:[data bytes] maxLength:[data length]];
 }
 
 - (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode

@@ -111,7 +111,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rudder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ph-Jj-ibC">
-                                <rect key="frame" x="80" y="254" width="50" height="21"/>
+                                <rect key="frame" x="80" y="256" width="50" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="68l-TE-H46"/>
@@ -119,8 +119,8 @@
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2rv-f0-Le0">
-                                <rect key="frame" x="84" y="272" width="42" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="128" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2rv-f0-Le0">
+                                <rect key="frame" x="84" y="274" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="94C-ho-CmS"/>
@@ -130,13 +130,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Speed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="erv-m4-NxU">
-                                <rect key="frame" x="438" y="254" width="50" height="21"/>
+                                <rect key="frame" x="438" y="256" width="50" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rGo-p1-Ewy">
-                                <rect key="frame" x="442" y="272" width="42" height="21"/>
+                                <rect key="frame" x="442" y="274" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                 <nil key="highlightedColor"/>
@@ -156,11 +156,11 @@
                             <constraint firstItem="gP0-bj-I9j" firstAttribute="top" secondItem="oar-up-J5J" secondAttribute="bottom" constant="213" id="Jhj-ME-7aw"/>
                             <constraint firstItem="nDB-cx-Kbx" firstAttribute="top" secondItem="1jV-ia-SUR" secondAttribute="bottom" constant="22" id="LbC-TM-bLh"/>
                             <constraint firstItem="rGo-p1-Ewy" firstAttribute="leading" secondItem="oar-up-J5J" secondAttribute="leading" id="MXm-mf-F0b"/>
-                            <constraint firstItem="gP0-bj-I9j" firstAttribute="top" secondItem="5ph-Jj-ibC" secondAttribute="bottom" constant="45" id="OgW-Qf-Gou"/>
+                            <constraint firstItem="gP0-bj-I9j" firstAttribute="top" secondItem="5ph-Jj-ibC" secondAttribute="bottom" constant="43" id="OgW-Qf-Gou"/>
                             <constraint firstItem="rGo-p1-Ewy" firstAttribute="baseline" secondItem="2rv-f0-Le0" secondAttribute="baseline" id="PXg-sH-bYt"/>
                             <constraint firstItem="2rv-f0-Le0" firstAttribute="leading" secondItem="sXi-cV-ohh" secondAttribute="leading" constant="84" id="V07-RY-vjm"/>
                             <constraint firstItem="rGo-p1-Ewy" firstAttribute="trailing" secondItem="oar-up-J5J" secondAttribute="trailing" id="WNY-z3-Wce"/>
-                            <constraint firstItem="gP0-bj-I9j" firstAttribute="top" secondItem="2rv-f0-Le0" secondAttribute="bottom" constant="27" id="bNP-ev-uOS"/>
+                            <constraint firstItem="gP0-bj-I9j" firstAttribute="top" secondItem="2rv-f0-Le0" secondAttribute="bottom" constant="25" id="bNP-ev-uOS"/>
                             <constraint firstAttribute="trailing" secondItem="EdJ-wh-QWx" secondAttribute="trailing" constant="80" id="gvi-Yd-wHP"/>
                             <constraint firstAttribute="trailing" secondItem="oar-up-J5J" secondAttribute="trailing" constant="84" id="hQW-Td-ui1"/>
                             <constraint firstItem="erv-m4-NxU" firstAttribute="top" secondItem="5ph-Jj-ibC" secondAttribute="top" id="hs8-SV-O4J"/>
