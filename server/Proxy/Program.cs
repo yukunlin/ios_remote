@@ -9,7 +9,13 @@ namespace Proxy
     {
         static void Main(string[] args)
         {
-            ProxyServer p = new ProxyServer(9000);
+            Console.Write("Enter Network Port: ");
+            int port = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Enter Forwarding address: ");
+            string forwardAddress = Console.ReadLine();
+            
+            ProxyServer p = new ProxyServer(port, forwardAddress);
             p.StartListening();
         }
     }

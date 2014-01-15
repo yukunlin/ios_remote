@@ -51,7 +51,7 @@ namespace IverRemoteServer
             // Start listening for connections.
             while (true)
             {
-                iverComm_ = new SimulatedIverComm(serialPort_);
+                iverComm_ = new HardwareIverComm(serialPort_);
 
                 Console.WriteLine("Waiting for a connection...");
                 // Program is suspended while waiting for an incoming connection.
@@ -77,7 +77,7 @@ namespace IverRemoteServer
                         data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
                         if (data.IndexOf("\n") > -1)
                         {
-                            string [] split = data.Split(',');
+                            string [] split = (data.Split('\n')[0]).Split(',');
 
                             int trim, throttle, rudder;
                             trim = throttle = rudder = 128;
@@ -90,6 +90,7 @@ namespace IverRemoteServer
                                 Console.WriteLine("Trim: {0}, Throttle: {1}, Rudder: {2}", trim, throttle, rudder);
                             }
                             catch (FormatException) { Console.WriteLine("Parse err"); }
+                            catch (IndexOutOfRangeException) { Console.WriteLine("Parse err"); }
 
                             iverComm_.SendBackseatCommands(rudder, rudder, trim, trim, throttle, 3);
                             iverComm_.UpdateFrontseatData();
@@ -99,7 +100,6 @@ namespace IverRemoteServer
                                          + String.Format("{0:0.#}",iverComm_.Pitch) + "," 
                                          + String.Format("{0:0.#}", iverComm_.Row);
 
-                            // Echo the data back to the client.
                             byte[] msg = Encoding.ASCII.GetBytes(reply);
                             handler.Send(msg);
 

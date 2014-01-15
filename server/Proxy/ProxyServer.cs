@@ -8,10 +8,12 @@ namespace Proxy
     public class ProxyServer
     {
         private int networkPort_;
+        private string forwardingAddress_;
 
-        public ProxyServer(int networkPort)
+        public ProxyServer(int networkPort, string forwardingAdress)
         {
             networkPort_ = networkPort;
+            forwardingAddress_ = forwardingAdress;
         }
 
         // Incoming data from the client.
@@ -56,9 +58,7 @@ namespace Proxy
                 data = null;
 
                 // Create a TCP/IP  socket to remote.
-               // IPHostEntry RemoteHostInfo = Dns.Resolve("192.168.1.13");
-                IPAddress RemoteAddress =  IPAddress.Parse("192.168.1.13");
-               // Console.WriteLine(RemoteAddress.ToString());
+                IPAddress RemoteAddress =  IPAddress.Parse(forwardingAddress_);
                 IPEndPoint remoteEP = new IPEndPoint(RemoteAddress, networkPort_);
                 Socket sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
                 sender.Connect(remoteEP);
