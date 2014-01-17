@@ -28,6 +28,8 @@
 
 @implementation ControllerViewController
 
+double period = 0.2;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -46,7 +48,7 @@
     
     // Set up accelerometer
     self.motionManager = [[CMMotionManager alloc] init];
-    self.motionManager.deviceMotionUpdateInterval = 0.1;
+    self.motionManager.deviceMotionUpdateInterval = 0.2;
     
     // Set up Compass
     NSInteger compassSize = 220;
@@ -56,8 +58,8 @@
     
     // Start accelerometer and networking
     [self.con openStream];
-    self.commTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(sendMessage) userInfo:nil repeats:YES];
-    self.guiTimer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(updateGUI) userInfo:nil repeats:YES];
+    self.commTimer = [NSTimer scheduledTimerWithTimeInterval:period target:self selector:@selector(sendMessage) userInfo:nil repeats:YES];
+    self.guiTimer = [NSTimer scheduledTimerWithTimeInterval:2 * period target:self selector:@selector(updateGUI) userInfo:nil repeats:YES];
     
     [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
                                             withHandler:^(CMDeviceMotion *motion, NSError *error)
@@ -66,7 +68,7 @@
             NSLog(@"%@", error);
         else
         {
-            self.con.Rudder = (int) MIN( MAX( (128 - 3.5 * (motion.attitude.pitch) / (M_PI/2) *128), 0), 256);
+            self.con.Rudder = (int) MIN( MAX( (128 - 3.5 * (motion.attitude.pitch) / (M_PI/2) *128), 0), 255);
             self.lblRudder.text = [NSString stringWithFormat:@"%d", self.con.Rudder];
         }
     }
@@ -92,8 +94,8 @@
 
 -(void) updateGUI
 {
-    [self.compass rotate:self.con.Heading * M_PI / -180 withRate:.2];
-    [self.compass translate:self.con.Pitch row:self.con.Row withRate:.2];
+    [self.compass rotate:self.con.Heading * M_PI / -180 withRate:2 * period];
+    [self.compass translate:self.con.Pitch row:self.con.Row withRate:2 * period];
     self.lblSpeed.text = [NSString stringWithFormat:@"%.1f", self.con.Speed];
 }
 
@@ -107,7 +109,7 @@
 
 -(void) initializeSlider:(LargeSlider*) slider action:(SEL) action
 {
-    slider.maximumValue = 256;
+    slider.maximumValue = 255;
     slider.minimumValue = 0;
     slider.value = 128;
     [slider addTarget:self action:action forControlEvents:UIControlEventValueChanged];

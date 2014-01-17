@@ -63,8 +63,8 @@
     CGFloat radius = self.bounds.size.width/2;
     [UIView animateWithDuration:r delay:0 options: UIViewAnimationOptionCurveLinear animations:^{
         self.transform = CGAffineTransformMakeTranslation(
-                                                          [self limitValue:row] * (.25/15.0) * radius,
-                                                          [self limitValue:pitch] * (.25/15.0) * radius);
+                                                          [self limitValue:row] * -(.25/15.0) * radius,
+                                                          [self limitValue:pitch] * -(.25/15.0) * radius);
     }completion:nil];
 }
 
