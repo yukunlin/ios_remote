@@ -15,8 +15,11 @@ namespace IverRemoteServer
 
         // VehicleState fields
         private double[] latLong_;
-        private double speed_;
-        private List<double> compassStates_;
+        private double speed_ = 0;
+        private List<double> compassStates_ = new List<double>(new[] { 0.0, 0.0, 0.0, 0.0, 0.0 });
+        private LinkedList<double[]> previousLocations_ = new LinkedList<double[]>();
+
+        private const int HISTORY_LENGTH = 12;
 
         /// <summary>
         /// Sets up the port for intra-Iver CPU communications.
@@ -84,6 +87,22 @@ namespace IverRemoteServer
             }
         }
 
+        public static double distFrom(double lat1, double lng1, double lat2, double lng2)
+        {
+            double earthRadius = 3958.75;
+            double dLat = (Math.PI / 180) * (lat2 - lat1);
+            double dLng = (Math.PI / 180) * (lng2 - lng1);
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                       Math.Cos((Math.PI / 180) * (lat1)) * Math.Cos((Math.PI / 180) * (lat2)) *
+                       Math.Sin(dLng / 2) * Math.Sin(dLng / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            double dist = earthRadius * c;
+            
+            double meterConversion = 1609;
+            dist = dist * meterConversion;
+
+            return dist;
+        }
 
         private void updatePosition(string data)
         {
@@ -95,7 +114,18 @@ namespace IverRemoteServer
             {
                 string[] messageEnd = splitData[length - 1].Split(new char[] { '*' });
                 latLong_ = new double[2] { Convert.ToDouble(splitData[4]), Convert.ToDouble(splitData[5]) };
-                speed_ = Convert.ToDouble(splitData[6]);
+                previousLocations_.AddFirst(latLong_);
+
+                if (previousLocations_.Count > HISTORY_LENGTH)
+                {
+                    previousLocations_.RemoveLast();
+                }
+
+                if (previousLocations_.Count == HISTORY_LENGTH)
+                {
+                    speed_ = distFrom((previousLocations_.First.Value)[0], (previousLocations_.First.Value)[1],
+                                      (previousLocations_.Last.Value)[0], (previousLocations_.Last.Value)[1])/2.4;
+                }
             }
         }
 

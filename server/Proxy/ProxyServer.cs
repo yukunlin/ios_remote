@@ -8,12 +8,14 @@ namespace Proxy
     public class ProxyServer
     {
         private int networkPort_;
+        private string listeningAddress_;
         private string forwardingAddress_;
 
-        public ProxyServer(int networkPort, string forwardingAdress)
+        public ProxyServer(int networkPort, string listeningAddress, string forwardingAdress)
         {
             networkPort_ = networkPort;
             forwardingAddress_ = forwardingAdress;
+            listeningAddress_ = listeningAddress;
         }
 
         // Incoming data from the client.
@@ -27,15 +29,7 @@ namespace Proxy
             // Establish the local endpoint for the socket.
             // Dns.GetHostName returns the name of the 
             // host running the application.
-            IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
-
-            foreach (IPAddress ip in ipHostInfo.AddressList)
-            {
-                Console.WriteLine("Listening at address {0}", ip);
-            }
-
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, networkPort_);
+            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse(listeningAddress_), networkPort_);
 
             // Create a TCP/IP socket.
             Socket listener = new Socket(AddressFamily.InterNetwork,

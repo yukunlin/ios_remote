@@ -12,10 +12,13 @@ namespace Proxy
             Console.Write("Enter Network Port: ");
             int port = Convert.ToInt32(Console.ReadLine());
 
+            Console.Write("Enter Listening address: ");
+            string listeningAddress = Console.ReadLine();
+
             Console.Write("Enter Forwarding address: ");
             string forwardAddress = Console.ReadLine();
-            
-            ProxyServer p = new ProxyServer(port, forwardAddress);
+
+            ProxyServer p = new ProxyServer(port, listeningAddress, forwardAddress);
             p.StartListening();
         }
     }
