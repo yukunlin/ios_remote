@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace IverRemoteServer
@@ -15,6 +16,11 @@ namespace IverRemoteServer
         {
             networkPort_ = networkPort;
             serialPort_ = serialPort;
+        }
+
+        private static int LimitValue(int x)
+        {
+            return Math.Min(Math.Max(x, 0), 255);
         }
 
         // Incoming data from the client.
@@ -79,7 +85,8 @@ namespace IverRemoteServer
                         {
                             string [] split = (data.Split('\n')[0]).Split(',');
 
-                            int trim, throttle, rudder;
+                            int trim, throttle, rudder, pitchOffset;
+                            pitchOffset = 0;
                             trim = throttle = rudder = 128;
                             try
                             {
@@ -87,12 +94,19 @@ namespace IverRemoteServer
                                 throttle = Convert.ToInt32(split[1]);
                                 rudder = Convert.ToInt32(split[2]);
 
-                                Console.WriteLine("Trim: {0}, Throttle: {1}, Rudder: {2}", trim, throttle, rudder);
+                                pitchOffset = (int) ((rudder - 128) * .5);
+
+                                Console.WriteLine("Trim: {0}, Roll : {1}, Throttle: {2}, Rudder: {3}",
+                                    trim, pitchOffset, throttle, rudder);
                             }
                             catch (FormatException) { Console.WriteLine("Parse err"); }
                             catch (IndexOutOfRangeException) { Console.WriteLine("Parse err"); }
 
-                            iverComm_.SendBackseatCommands(rudder, rudder, trim, trim, throttle, 3);
+
+                            iverComm_.SendBackseatCommands(rudder, rudder, 
+                                                           LimitValue(trim + pitchOffset), 
+                                                           LimitValue(trim - pitchOffset),
+                                                           throttle, 3);
                             iverComm_.UpdateFrontseatData();
 
                             string reply = String.Format("{0:0.#}", iverComm_.Heading) + "," 
