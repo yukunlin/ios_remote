@@ -23,7 +23,7 @@
     self.Port = port;
     self.IP = ip;
     self.Trim = self.Throttle = self.Rudder = 128;
-    self.Heading = self.Speed = self.Pitch = self.Row = 0;
+    self.Heading = self.Speed = self.Pitch = self.Roll = 0;
     self.View = view;
     return self;
 }
@@ -110,9 +110,9 @@
                     self.Heading = [[split objectAtIndex:0] doubleValue];
                     self.Speed = [[split objectAtIndex:1] doubleValue];
                     self.Pitch = [[split objectAtIndex:2] doubleValue];
-                    self.Row = [[split objectAtIndex:3] doubleValue];
+                    self.Roll = [[split objectAtIndex:3] doubleValue];
                     
-                    NSLog(@"Heading: %f, Speed: %f, Pitch: %f, Row: %f", self.Heading, self.Speed, self.Pitch, self.Row);
+                    NSLog(@"Heading: %f, Speed: %f, Pitch: %f, Roll: %f", self.Heading, self.Speed, self.Pitch, self.Roll);
                     
                     // Reset timeout Timer
                     [self.TimeOutTimer invalidate];

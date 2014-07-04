@@ -95,7 +95,7 @@ double period = 0.25;
 -(void) updateGUI
 {
     [self.compass rotate:self.con.Heading * M_PI / -180 withRate:2 * period];
-    [self.compass translate:self.con.Pitch row:self.con.Row withRate:2 * period];
+    [self.compass translate:self.con.Pitch roll:self.con.Roll withRate:2 * period];
     self.lblSpeed.text = [NSString stringWithFormat:@"%.1f", self.con.Speed];
 }
 
