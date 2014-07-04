@@ -50,12 +50,7 @@
 
 - (double) limitValue:(double)value
 {
-    if (value > 15)
-        return 15;
-    else if (value < -15)
-        return -15;
-    else
-        return value;
+    return MAX(MIN(value, 45), -45);
 }
 
 -(void) translate:(double) pitch row:(double) row withRate:(double)r
@@ -63,8 +58,8 @@
     CGFloat radius = self.bounds.size.width/2;
     [UIView animateWithDuration:r delay:0 options: UIViewAnimationOptionCurveLinear animations:^{
         self.transform = CGAffineTransformMakeTranslation(
-                                                          [self limitValue:row] * -(.25/15.0) * radius,
-                                                          [self limitValue:pitch] * -(.25/15.0) * radius);
+                                                          [self limitValue:row] * -(.25/45.0) * radius,
+                                                          [self limitValue:pitch] * -(.25/45.0) * radius);
     }completion:nil];
 }
 

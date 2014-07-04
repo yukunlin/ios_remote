@@ -28,7 +28,7 @@
 
 @implementation ControllerViewController
 
-double period = 0.2;
+double period = 0.25;
 
 - (void)viewDidLoad
 {
@@ -68,7 +68,7 @@ double period = 0.2;
             NSLog(@"%@", error);
         else
         {
-            self.con.Rudder = (int) MIN( MAX( (128 - 3.5 * (motion.attitude.pitch) / (M_PI/2) *128), 0), 255);
+            self.con.Rudder = (int) MIN( MAX( (128 + 3.5 * (motion.attitude.pitch) / (M_PI/2) *128), 0), 255);
             self.lblRudder.text = [NSString stringWithFormat:@"%d", self.con.Rudder];
         }
     }
