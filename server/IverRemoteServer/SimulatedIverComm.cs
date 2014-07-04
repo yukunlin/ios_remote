@@ -8,10 +8,10 @@ namespace IverRemoteServer
     class SimulatedIverComm : IverComm
     {
 
-        private double speed_ = 0;
-        private double heading_ = 0;
-        private double pitch_ = 0;
-        private double row_ = 0;
+        private double _speed = 0;
+        private double _heading = 0;
+        private double _pitch = 0;
+        private double _row = 0;
 
         public SimulatedIverComm(string port)
         {
@@ -30,22 +30,22 @@ namespace IverRemoteServer
 
         public void SendBackseatCommands(int topFin, int bottomFin, int portFin, int starboardFin, int motorSpeed, int timeOut)
         {
-            speed_ = (motorSpeed - 128) / 40.0;
-            pitch_ =  (motorSpeed - 128) / 25.0;
-            row_ = speed_ * ((128 - topFin) / 20.0);
-            heading_ = ( heading_ - speed_ * ((128 - topFin) / 20.0) );
+            _speed = (motorSpeed - 128) / 40.0;
+            _pitch =  (motorSpeed - 128) / 25.0;
+            _row = _speed * ((128 - topFin) / 20.0);
+            _heading = ( _heading - _speed * ((128 - topFin) / 20.0) );
 
-            if (heading_ < 0)
+            if (_heading < 0)
             {
-                heading_ = 360 + heading_;
+                _heading = 360 + _heading;
             }
 
-            heading_ = heading_ % 360;
+            _heading = _heading % 360;
         }
 
         public double Heading
         {
-            get { return heading_; }
+            get { return _heading; }
         }
 
         public double[] LatLong
@@ -55,17 +55,17 @@ namespace IverRemoteServer
 
         public double Pitch
         {
-            get { return pitch_; }
+            get { return _pitch; }
         }
 
         public double Row
         {
-            get { return row_; }
+            get { return _row; }
         }
 
         public double Speed
         {
-            get { return speed_; }
+            get { return _speed; }
         }
     }
 }

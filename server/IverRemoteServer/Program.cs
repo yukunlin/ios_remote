@@ -23,7 +23,7 @@ namespace IverRemoteServer
                 serialport = stream.ReadLine();
                 // Read until eof
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("SETTING.txt not present or in right format, enter settings manually");
                 Console.Write("Enter Network Port: ");
@@ -33,7 +33,7 @@ namespace IverRemoteServer
                 serialport = Console.ReadLine();
             }
            
-            Server server = new Server(port, serialport);
+            var server = new Server(port, serialport);
             server.StartListening();
         }
     }

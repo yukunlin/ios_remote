@@ -9,45 +9,43 @@ namespace IverRemoteServer
 {
     public class HardwareIverComm : IverComm
     {
+        // ReSharper disable once InconsistentNaming
         private const string ASKFORDATA = "$OSD,C,G,Y,S,D*3E\r\n";  // checksum at the end MUST be correct
 
-        private SerialPort port_; // Port for communicating between primary and secondary CPUs.
+        private readonly SerialPort _port; // Port for communicating between primary and secondary CPUs.
 
         // VehicleState fields
-        private double[] latLong_;
-        private double speed_ = 0;
-        private List<double> compassStates_ = new List<double>(new[] { 0.0, 0.0, 0.0, 0.0, 0.0 });
-        private LinkedList<double[]> previousLocations_ = new LinkedList<double[]>();
+        private double[] _latLong;
+        private double _speed;
+        private List<double> _compassStates = new List<double>(new[] { 0.0, 0.0, 0.0, 0.0, 0.0 });
+        private readonly LinkedList<double[]> _previousLocations = new LinkedList<double[]>();
 
+        // ReSharper disable once InconsistentNaming
         private const int HISTORY_LENGTH = 12;
 
         /// <summary>
         /// Sets up the port for intra-Iver CPU communications.
         /// </summary>
         /// <param name="comPortName">The comPort between the primary and secondary CPUs.</param>
-        /// <param name="latOrig">The latitude of the orgin of the coordinate system.</param>
-        /// <param name="longOrig">The longitude of the origin of the coordinate system. </param>
         public HardwareIverComm(string comPortName)
         {
-            port_ = new SerialPort(comPortName, 19200, Parity.None, 8, StopBits.One);
-            port_.ReadTimeout = 10;
+            _port = new SerialPort(comPortName, 19200, Parity.None, 8, StopBits.One);
+            _port.ReadTimeout = 10;
         }
 
         /// <summary>
         /// Sends a request to the frontseat for data, then clears the buffer of messages and
         /// updates vehicle state. 
         /// </summary>
-        /// <param name="vState">Only here to satisfy the interface requirements.</param>
-        /// <returns>Returns an updated VehicleState</returns>
         public void UpdateFrontseatData()
         {
-            sendCommand(ASKFORDATA);
-            string data = readFrontseatData();
+            SendCommand(ASKFORDATA);
+            var data = ReadFrontseatData();
 
             while (data != null)
             {
                 UpdateVehicleState(data);
-                data = readFrontseatData();
+                data = ReadFrontseatData();
             }
         }
 
@@ -55,11 +53,11 @@ namespace IverRemoteServer
         /// Pulls a message off of the intra-AUV comPort buffer. 
         /// </summary>
         /// <returns>A message from the comPort.</returns>
-        private string readFrontseatData()
+        private string ReadFrontseatData()
         {
             try
             {
-                return port_.ReadLine();
+                return _port.ReadLine();
             }
             catch (TimeoutException) { }
 
@@ -79,15 +77,15 @@ namespace IverRemoteServer
         {
             if (data.StartsWith("$OSI"))
             {
-                updatePosition(data);
+                UpdatePosition(data);
             }
             else if (data.StartsWith("$C"))
             {
-                updateCompass(data);
+                UpdateCompass(data);
             }
         }
 
-        public static double distFrom(double lat1, double lng1, double lat2, double lng2)
+        public static double DistFrom(double lat1, double lng1, double lat2, double lng2)
         {
             double earthRadius = 3958.75;
             double dLat = (Math.PI / 180) * (lat2 - lat1);
@@ -104,36 +102,34 @@ namespace IverRemoteServer
             return dist;
         }
 
-        private void updatePosition(string data)
+        private void UpdatePosition(string data)
         {
-            string[] splitData = data.Split(new char[] { ',' });
+            string[] splitData = data.Split(new [] { ',' });
 
             int length = splitData.Length;
 
             if (length >= 10 && length <= 12)
             {
-                string[] messageEnd = splitData[length - 1].Split(new char[] { '*' });
-                latLong_ = new double[2] { Convert.ToDouble(splitData[4]), Convert.ToDouble(splitData[5]) };
-                previousLocations_.AddFirst(latLong_);
+                _latLong = new [] { Convert.ToDouble(splitData[4]), Convert.ToDouble(splitData[5]) };
+                _previousLocations.AddFirst(_latLong);
 
-                if (previousLocations_.Count > HISTORY_LENGTH)
+                if (_previousLocations.Count > HISTORY_LENGTH)
                 {
-                    previousLocations_.RemoveLast();
+                    _previousLocations.RemoveLast();
                 }
 
-                if (previousLocations_.Count == HISTORY_LENGTH)
+                if (_previousLocations.Count == HISTORY_LENGTH)
                 {
-                    speed_ = distFrom((previousLocations_.First.Value)[0], (previousLocations_.First.Value)[1],
-                                      (previousLocations_.Last.Value)[0], (previousLocations_.Last.Value)[1])/2.4;
+                    _speed = DistFrom((_previousLocations.First.Value)[0], (_previousLocations.First.Value)[1],
+                                      (_previousLocations.Last.Value)[0], (_previousLocations.Last.Value)[1])/2.4;
                 }
             }
         }
 
 
-        private void updateCompass(string data)
+        private void UpdateCompass(string data)
         {
-            string[] splitData;
-            splitData = data.Split(new char[] { 'C', 'P', 'R', 'T', 'D', '*' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] splitData = data.Split(new [] { 'C', 'P', 'R', 'T', 'D', '*' }, StringSplitOptions.RemoveEmptyEntries);
 
             double compHeading = Convert.ToDouble(splitData[1]);
             double pitch = Convert.ToDouble(splitData[2]);
@@ -141,7 +137,7 @@ namespace IverRemoteServer
             double compTemp = Convert.ToDouble(splitData[4]);
             double depth = Convert.ToDouble(splitData[5]);
 
-            compassStates_ = new List<double>(new[] { compHeading, pitch, roll, compTemp, depth });
+            _compassStates = new List<double>(new[] { compHeading, pitch, roll, compTemp, depth });
         }
 
         /// <summary>
@@ -149,36 +145,36 @@ namespace IverRemoteServer
         /// </summary>
         public void ClosePort()
         {
-            port_.Close();
-            port_.Dispose();
+            _port.Close();
+            _port.Dispose();
         }
 
-        private int limitValue(int val)
+        private static int LimitValue(int x)
         {
-            if (val > 256) { return 256; }
-            else if (val < 0) { return 0; }
-            else { return val; }
+            return Math.Min(Math.Max(x, 0), 255);
         }
 
         /// <summary>
         /// Send the most recent backseat commands to the frontseat. 
         /// </summary>
-        /// <param name="controlVariables">Contains most recent controller command.</param>
+        /// <param name="topFin"></param>
+        /// <param name="bottomFin"></param>
+        /// <param name="portFin"></param>
+        /// <param name="starboardFin"></param>
+        /// <param name="motorSpeed"></param>
+        /// <param name="timeOut"></param>
         public void SendBackseatCommands(int topFin, int bottomFin, int portFin, int starboardFin, int motorSpeed, int timeOut)
         {
-            string message;
-            string cSum;
+            var message = "$OMP," + ToHexString(LimitValue(topFin)) + ToHexString(LimitValue(bottomFin))
+                             + ToHexString(LimitValue(portFin)) + ToHexString(LimitValue(starboardFin)) 
+                             + ToHexString(LimitValue(motorSpeed)) + ",00," + timeOut + "*";
 
-            message = "$OMP," + toHexString(limitValue(topFin)) + toHexString(limitValue(bottomFin))
-                              + toHexString(limitValue(portFin)) + toHexString(limitValue(starboardFin)) 
-                              + toHexString(limitValue(motorSpeed)) + ",00," + timeOut.ToString() + "*";
-
-            cSum = getCheckSum(message);
+            var cSum = getCheckSum(message);
 
             message += cSum.Substring(1, 1) + cSum.Substring(2, 1) + "\r\n";
 
 
-            sendCommand(message);
+            SendCommand(message);
         }
 
         private string getCheckSum(string commandMessage)
@@ -196,32 +192,32 @@ namespace IverRemoteServer
                 }
             }
 
-            return System.Uri.HexEscape((char)checksum);
+            return Uri.HexEscape((char)checksum);
         }
 
         /// <summary>
         /// Converts an integer to a hex value in string form.
         /// </summary>
-        /// <param name="val">An integer to convert.</param>
+        /// <param name="valToConvert">An integer to convert.</param>
         /// <returns>it's hex equivalent in string form.</returns>
-        private string toHexString(int valToConvert)
+        private static string ToHexString(int valToConvert)
         {
-            return System.Uri.HexEscape((char)valToConvert).Substring(1, 2);
+            return Uri.HexEscape((char)valToConvert).Substring(1, 2);
         }
 
         /// <summary>
         /// Writes a command to the intra-AUV comPort.
         /// </summary>
         /// <param name="command">The command to write.</param>
-        private void sendCommand(string command)
+        private void SendCommand(string command)
         {
             try
             {
-                if (!(port_.IsOpen))
+                if (!(_port.IsOpen))
                 {
-                    port_.Open();
+                    _port.Open();
                 }
-                port_.Write(command);
+                _port.Write(command);
             }
             catch (Exception e)
             {
@@ -231,27 +227,27 @@ namespace IverRemoteServer
 
         public double Speed
         {
-            get { return speed_; }
+            get { return _speed; }
         }
 
         public double[] LatLong
         {
-            get { return latLong_; }
+            get { return _latLong; }
         }
 
         public double Heading
         {
-            get { return compassStates_[0]; }
+            get { return _compassStates[0]; }
         }
 
         public double Pitch
         {
-            get { return compassStates_[1]; }
+            get { return _compassStates[1]; }
         }
 
         public double Row
         {
-            get { return compassStates_[2]; }
+            get { return _compassStates[2]; }
         }
     }
 }

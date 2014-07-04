@@ -8,28 +8,22 @@ namespace IverRemoteServer
 {
     public class Server
     {
-        private int networkPort_;
-        private IverComm iverComm_;
-        private string serialPort_;
+        private readonly int _networkPort;
+        private IverComm _iverComm;
+        private readonly string _serialPort;
 
         public Server(int networkPort, string serialPort)
         {
-            networkPort_ = networkPort;
-            serialPort_ = serialPort;
-        }
-
-        private static int LimitValue(int x)
-        {
-            return Math.Min(Math.Max(x, 0), 255);
+            _networkPort = networkPort;
+            _serialPort = serialPort;
         }
 
         // Incoming data from the client.
-        public static string data = null;
+        private static string _data;
 
         public void StartListening()
         {
             // Data buffer for incoming data.
-            byte[] bytes = new Byte[1024];
 
             // Establish the local endpoint for the socket.
             // Dns.GetHostName returns the name of the 
@@ -42,7 +36,7 @@ namespace IverRemoteServer
             }
 
             IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, networkPort_);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, _networkPort);
 
             // Create a TCP/IP socket.
             Socket listener = new Socket(AddressFamily.InterNetwork,
@@ -57,18 +51,18 @@ namespace IverRemoteServer
             // Start listening for connections.
             while (true)
             {
-                iverComm_ = new HardwareIverComm(serialPort_);
+                _iverComm = new HardwareIverComm(_serialPort);
 
                 Console.WriteLine("Waiting for a connection...");
                 // Program is suspended while waiting for an incoming connection.
                 Socket handler = listener.Accept();
                 handler.ReceiveTimeout = 5000;
-                data = null;
+                _data = null;
 
                 // An incoming connection needs to be processed.
                 while (true)
                 {
-                    bytes = new byte[1024];
+                    var bytes = new byte[1024];
 
                     try
                     {
@@ -80,10 +74,10 @@ namespace IverRemoteServer
                             throw new SocketException();
                         }
 
-                        data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                        if (data.IndexOf("\n") > -1)
+                        _data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                        if (_data.IndexOf("\n") > -1)
                         {
-                            string [] split = (data.Split('\n')[0]).Split(',');
+                            string [] split = (_data.Split('\n')[0]).Split(',');
 
                             int trim, throttle, rudder, pitchOffset;
                             pitchOffset = 0;
@@ -103,21 +97,21 @@ namespace IverRemoteServer
                             catch (IndexOutOfRangeException) { Console.WriteLine("Parse err"); }
 
 
-                            iverComm_.SendBackseatCommands(rudder, rudder, 
-                                                           LimitValue(trim + pitchOffset), 
-                                                           LimitValue(trim - pitchOffset),
+                            _iverComm.SendBackseatCommands(rudder, rudder, 
+                                                           trim + pitchOffset, 
+                                                           trim - pitchOffset,
                                                            throttle, 3);
-                            iverComm_.UpdateFrontseatData();
+                            _iverComm.UpdateFrontseatData();
 
-                            string reply = String.Format("{0:0.#}", iverComm_.Heading) + "," 
-                                         + String.Format("{0:0.#}",iverComm_.Speed)+ "," 
-                                         + String.Format("{0:0.#}",iverComm_.Pitch) + "," 
-                                         + String.Format("{0:0.#}", iverComm_.Row);
+                            string reply = String.Format("{0:0.#}", _iverComm.Heading) + "," 
+                                         + String.Format("{0:0.#}",_iverComm.Speed)+ "," 
+                                         + String.Format("{0:0.#}",_iverComm.Pitch) + "," 
+                                         + String.Format("{0:0.#}", _iverComm.Row);
 
                             byte[] msg = Encoding.ASCII.GetBytes(reply);
                             handler.Send(msg);
 
-                            data = null;
+                            _data = null;
                         }
                     }
                     catch (SocketException)
@@ -127,7 +121,7 @@ namespace IverRemoteServer
                     }
                 }
 
-                iverComm_.ClosePort();
+                _iverComm.ClosePort();
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
             }
