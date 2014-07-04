@@ -42,9 +42,9 @@
     [self.plate rotate:angle withRate:r];
 }
 
--(void) translate:(double) pitch row:(double) row withRate:(double)r
+-(void) translate:(double) pitch roll:(double) roll withRate:(double)r
 {
-    [self.tPlate translate:pitch row:row withRate:r];
+    [self.tPlate translate:pitch roll:roll withRate:r];
 }
 
 @end

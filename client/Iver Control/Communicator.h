@@ -18,7 +18,7 @@
 @property double Heading;
 @property double Speed;
 @property double Pitch;
-@property double Row;
+@property double Roll;
 @property (weak) UIViewController* View;
 
 -(id) initWithAddress:(NSString*)ip port:(int)port andDelegateView:(UIViewController*)view;

@@ -10,6 +10,6 @@
 
 @interface Compass : UIView
 -(void) rotate:(double) angle withRate:(double)r;
--(void) translate:(double) pitch row:(double) row withRate:(double)r;
+-(void) translate:(double) pitch roll:(double) roll withRate:(double)r;
 
 @end
