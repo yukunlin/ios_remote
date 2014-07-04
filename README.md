@@ -1,5 +1,4 @@
 ##iPhone Remote for Iver2 AUV
-==========
 
 ### Requirements
 - [TCP Proxy Server] (http://www.partow.net/programming/tcpproxy/index.html)
@@ -26,7 +25,8 @@ On the secondary CPU of the Iver, run `IverRemoteServer.exe`. A `SETTINGS.txt`
 file is optional. For example, if you want the server to use network port 9000
 and the serial port is `COM1`, then `SETTINGS.txt` will look like
 ```
-9000COM1
+9000
+COM1
 ```
 
 #### iPhone
