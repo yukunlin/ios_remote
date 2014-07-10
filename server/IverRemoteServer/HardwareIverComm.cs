@@ -108,7 +108,7 @@ namespace IverRemoteServer
 
             int length = splitData.Length;
 
-            if (length >= 10 && length <= 12)
+            if (length >= 10 && length <= 14)
             {
                 _latLong = new [] { Convert.ToDouble(splitData[4]), Convert.ToDouble(splitData[5]) };
                 _previousLocations.AddFirst(_latLong);
