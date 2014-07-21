@@ -25,7 +25,7 @@ namespace IverRemoteServer
             }
             catch (Exception)
             {
-                Console.WriteLine("SETTING.txt not present or in right format, enter settings manually");
+                Console.WriteLine("SETTINGS.txt not present or in right format, enter settings manually");
                 Console.Write("Enter Network Port: ");
                 port = Convert.ToInt32(Console.ReadLine());
 
